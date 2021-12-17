@@ -30,7 +30,7 @@
         android:ems="10"
         android:hint="@string/add_an_item_here" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvItems"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
