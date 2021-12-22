@@ -16,21 +16,21 @@ import java.util.List;
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> {
 
     // An interface that MainActivity will implement
-    public interface OnLongClickListener{
+    public interface OnItemLongClickListener {
         void onItemLongClicked(int position);
     }
 
     List<String> items;
-    OnLongClickListener longClickListener;
+    OnItemLongClickListener itemLongClickListener;
 
     /**
      * Initialize the dataset of the Adapter.
      * @param items List<String> containing the data to populate views to be used
      * by RecyclerView.
      */
-    public ItemsAdapter(List<String> items, OnLongClickListener longClickListener){
+    public ItemsAdapter(List<String> items, OnItemLongClickListener itemLongClickListener){
         this.items = items;
-        this.longClickListener = longClickListener;
+        this.itemLongClickListener = itemLongClickListener;
     }
 
     // Create new views (invoked by the layout manager)
@@ -81,7 +81,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                 @Override
                 public boolean onLongClick(View view) {
                     // Notify the listener at which position was long pressed
-                    longClickListener.onItemLongClicked(getAdapterPosition());
+                    itemLongClickListener.onItemLongClicked(getAdapterPosition());
                     return true;
                 }
             });

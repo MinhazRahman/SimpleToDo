@@ -38,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
         items.add("Exercise for 30minutes");
         items.add("Go to work");
 
-        ItemsAdapter.OnLongClickListener onLongClickListener = new ItemsAdapter.OnLongClickListener() {
+        // Implement ItemsAdapter.OnItemLongClickListener interface
+        ItemsAdapter.OnItemLongClickListener onLongClickListener = new ItemsAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClicked(int position) {
                 // Remove the item from the data model
