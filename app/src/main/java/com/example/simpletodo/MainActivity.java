@@ -1,8 +1,12 @@
 package com.example.simpletodo;
 
-import androidx.appcompat.app.AppCompatActivity;
 
+import static org.apache.commons.io.FileUtils.readLines;
+import static org.apache.commons.io.FileUtils.writeLines;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +15,9 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,11 +39,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rvItems);
 
 
-        // create some mock data
-        items = new ArrayList<>();
-        items.add("Solve Leetcode problems");
-        items.add("Exercise for 30minutes");
-        items.add("Go to work");
+        loadItems();
 
         // Implement ItemsAdapter.OnItemLongClickListener interface
         ItemsAdapter.OnItemLongClickListener onLongClickListener = new ItemsAdapter.OnItemLongClickListener() {
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 itemsAdapter.notifyItemRemoved(position);
                 // Notify the user
                 Toast.makeText(getApplicationContext(), "Item was removed", Toast.LENGTH_SHORT).show();
-
+                saveItems();
             }
         };
 
@@ -74,7 +77,32 @@ public class MainActivity extends AppCompatActivity {
                 editText.setText("");
                 // Notify user that an item was added
                 Toast.makeText(getApplicationContext(), "Item was added", Toast.LENGTH_SHORT).show();
+                saveItems();
             }
         });
+    }
+
+    // Get data file
+    private File getDataFile(){
+        return new File(getFilesDir(), "data.txt");
+    }
+
+    // Load data from the data file
+    private void loadItems(){
+        try {
+            items = new ArrayList<>(readLines(getDataFile(), Charset.defaultCharset()));
+        }catch (IOException exception){
+            Log.e("MainActivity", "Error while reading items", exception);
+            items = new ArrayList<>();
+        }
+    }
+
+    // Save data into the data file
+    private void saveItems(){
+        try {
+            writeLines(getDataFile(), items);
+        } catch (IOException exception) {
+            Log.e("MainActivity", "Error while writing items", exception);
+        }
     }
 }
