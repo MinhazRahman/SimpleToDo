@@ -31,8 +31,6 @@ public class EditActivity extends AppCompatActivity {
 
         // Set the text to be edited to the Text field
         editText.setText(itemTextToBeEdited);
-        // Get the text after editing
-        String editedItemText = editText.getText().toString();
 
         // After Editing the text, we click on the Save button
         btnSave.setOnClickListener(new View.OnClickListener() {
@@ -41,7 +39,7 @@ public class EditActivity extends AppCompatActivity {
                 // Create an intent
                 Intent intent = new Intent();
                 // Pass relevant data back as a result
-                intent.putExtra(MainActivity.KEY_ITEM_TEXT, editedItemText);
+                intent.putExtra(MainActivity.KEY_ITEM_TEXT, editText.getText().toString());
                 intent.putExtra(MainActivity.KEY_ITEM_POSITION, itemPosition);
                 // Activity finished ok, return the data
                 setResult(RESULT_OK, intent); // set result code and bundle data for response

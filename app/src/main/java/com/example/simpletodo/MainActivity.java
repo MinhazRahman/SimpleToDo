@@ -4,6 +4,7 @@ package com.example.simpletodo;
 import static org.apache.commons.io.FileUtils.readLines;
 import static org.apache.commons.io.FileUtils.writeLines;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -107,6 +108,31 @@ public class MainActivity extends AppCompatActivity {
                 saveItems();
             }
         });
+    }
+
+    // Once the sub-activity finishes, the onActivityResult() method in the calling activity is invoked
+    // Handle the result of the sub-activity
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == EDIT_TEXT_CODE) {
+            // Extract the updated data
+            int itemPosition = data.getExtras().getInt(KEY_ITEM_POSITION);
+            String editedItemText = data.getStringExtra(KEY_ITEM_TEXT);
+
+            Log.d("MainActivity:", "Updated items: " + itemPosition + " " + editedItemText);
+
+            // Update the model with the edited item
+            items.set(itemPosition, editedItemText);
+            // Notify the adapter
+            itemsAdapter.notifyItemChanged(itemPosition);
+            saveItems();
+            Toast.makeText(getApplicationContext(), "Item updated successfully", Toast.LENGTH_SHORT).show();
+        }else {
+            Log.w("MainActivity", "Unknown call to onActivityResult");
+        }
     }
 
     // Get data file
