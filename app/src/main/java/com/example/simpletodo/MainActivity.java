@@ -55,8 +55,19 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        ItemsAdapter.OnItemClickListener onItemClickListener = new ItemsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClicked(int position) {
+                // Get the text at the given position
+                String itemText = items.get(position);
+
+                Log.d("MainActivity", "Single click at position: " + position + " " + itemText);
+                // Move to the EditActivity screen
+            }
+        };
+
         // Construct the adapter for the items
-        itemsAdapter = new ItemsAdapter(items, onLongClickListener);
+        itemsAdapter = new ItemsAdapter(items, onLongClickListener, onItemClickListener);
         // Set the Adapter for the RecyclerView
         recyclerView.setAdapter(itemsAdapter);
         // Set the LayoutManager for the RecyclerView

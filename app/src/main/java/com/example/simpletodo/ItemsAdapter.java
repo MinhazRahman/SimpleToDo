@@ -20,17 +20,25 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         void onItemLongClicked(int position);
     }
 
+    // An interface that MainActivity will implement
+    public interface OnItemClickListener{
+        void onItemClicked(int position);
+    }
+
     List<String> items;
     OnItemLongClickListener itemLongClickListener;
+    OnItemClickListener itemClickListener;
 
     /**
      * Initialize the dataset of the Adapter.
      * @param items List<String> containing the data to populate views to be used
      * by RecyclerView.
      */
-    public ItemsAdapter(List<String> items, OnItemLongClickListener itemLongClickListener){
+    public ItemsAdapter(List<String> items, OnItemLongClickListener itemLongClickListener,
+                        OnItemClickListener itemClickListener){
         this.items = items;
         this.itemLongClickListener = itemLongClickListener;
+        this.itemClickListener = itemClickListener;
     }
 
     // Create new views (invoked by the layout manager)
@@ -77,6 +85,13 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         public void bind(String item) {
 
             textView.setText(item);
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Notify the listener at which position was clicked
+                    itemClickListener.onItemClicked(getAdapterPosition());
+                }
+            });
             textView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
