@@ -5,6 +5,8 @@ import static org.apache.commons.io.FileUtils.readLines;
 import static org.apache.commons.io.FileUtils.writeLines;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final String KEY_ITEM_POSITION = "item_position";
+    public static final String KEY_ITEM_TEXT = "item_text";
+    public static final int EDIT_TEXT_CODE = 25;
 
     List<String> items;
     Button btnAdd;
@@ -58,11 +64,21 @@ public class MainActivity extends AppCompatActivity {
         ItemsAdapter.OnItemClickListener onItemClickListener = new ItemsAdapter.OnItemClickListener() {
             @Override
             public void onItemClicked(int position) {
-                // Get the text at the given position
+                // Get the text of the item at the given position
                 String itemText = items.get(position);
 
                 Log.d("MainActivity", "Single click at position: " + position + " " + itemText);
-                // Move to the EditActivity screen
+
+                // Construct the Intent
+                // first parameter is the context, second is the class of the activity to launch
+                Intent intent = new Intent(MainActivity.this, EditActivity.class);
+
+                // Pass the data being edited to EditActivity
+                intent.putExtra(KEY_ITEM_POSITION, position);
+                intent.putExtra(KEY_ITEM_TEXT, itemText);
+
+                // Brings up the second activity
+                startActivityForResult(intent, EDIT_TEXT_CODE);
             }
         };
 
