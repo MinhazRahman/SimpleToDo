@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -96,16 +97,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Get item from the text field
-                String newItem = editText.getText().toString();
-                // Add item to the data model
-                items.add(newItem);
-                // Notify adapter that an item is inserted
-                itemsAdapter.notifyItemInserted(items.size()-1); // item is inserted at the last position
-                // Clear the edit text
-                editText.setText("");
-                // Notify user that an item was added
-                Toast.makeText(getApplicationContext(), "Item was added", Toast.LENGTH_SHORT).show();
-                saveItems();
+                String newItem = editText.getText().toString().trim();
+
+                // Check if editText field is empty
+                if (TextUtils.isEmpty(newItem)){
+                    Toast.makeText(getApplicationContext(), "Empty field not allowed!",
+                            Toast.LENGTH_SHORT).show();
+                }else {
+                    // Add item to the data model
+                    items.add(newItem);
+                    // Notify adapter that an item is inserted
+                    itemsAdapter.notifyItemInserted(items.size()-1); // item is inserted at the last position
+                    // Clear the edit text
+                    editText.setText("");
+                    // Notify user that an item was added
+                    Toast.makeText(getApplicationContext(), "Item was added",
+                            Toast.LENGTH_SHORT).show();
+                    saveItems();
+                }
             }
         });
     }
