@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.Objects;
 
@@ -38,12 +40,21 @@ public class EditActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Create an intent
                 Intent intent = new Intent();
-                // Pass relevant data back as a result
-                intent.putExtra(MainActivity.KEY_ITEM_TEXT, editText.getText().toString());
-                intent.putExtra(MainActivity.KEY_ITEM_POSITION, itemPosition);
-                // Activity finished ok, return the data
-                setResult(RESULT_OK, intent); // set result code and bundle data for response
-                finish(); // closes the activity, pass data to parent
+                // Get the text from the field after clicking on the button
+                String updatedItem = editText.getText().toString().trim();
+
+                // Check if editText field if empty
+                if (TextUtils.isEmpty(updatedItem)){
+                    Toast.makeText(getApplicationContext(), "Empty field not allowed!",
+                            Toast.LENGTH_SHORT).show();
+                }else {
+                    // Pass relevant data back as a result
+                    intent.putExtra(MainActivity.KEY_ITEM_TEXT, updatedItem);
+                    intent.putExtra(MainActivity.KEY_ITEM_POSITION, itemPosition);
+                    // Activity finished ok, return the data
+                    setResult(RESULT_OK, intent); // set result code and bundle data for response
+                    finish(); // closes the activity, pass data to parent
+                }
             }
         });
     }
