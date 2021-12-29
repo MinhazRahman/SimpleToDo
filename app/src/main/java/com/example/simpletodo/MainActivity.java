@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int EDIT_TEXT_CODE = 25;
 
     List<String> items;
-    Button btnAdd;
+    FloatingActionButton btnAdd;
     EditText editText;
     RecyclerView recyclerView;
     ItemsAdapter itemsAdapter;
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 // Get the text of the item at the given position
                 String itemText = items.get(position);
 
-                Log.d("MainActivity", "Single click at position: " + position + " " + itemText);
+               // Log.d("MainActivity", "Single click at position: " + position + " " + itemText);
 
                 // Construct the Intent
                 // first parameter is the context, second is the class of the activity to launch
@@ -138,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             int itemPosition = data.getExtras().getInt(KEY_ITEM_POSITION);
             String editedItemText = data.getStringExtra(KEY_ITEM_TEXT);
 
-            Log.d("MainActivity:", "Updated items: " + itemPosition + " " + editedItemText);
+            // Log.d("MainActivity:", "Updated items: " + itemPosition + " " + editedItemText);
 
             // Update the model with the edited item
             items.set(itemPosition, editedItemText);

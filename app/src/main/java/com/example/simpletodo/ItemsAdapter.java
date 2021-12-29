@@ -85,6 +85,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         public void bind(String item) {
 
             textView.setText(item);
+            // Add icon to each item
+            textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.abc_vector_test, 0, 0, 0);
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

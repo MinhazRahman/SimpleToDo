@@ -10,12 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.Objects;
 
 public class EditActivity extends AppCompatActivity {
 
     EditText editText;
-    Button btnSave;
+    FloatingActionButton btnSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
