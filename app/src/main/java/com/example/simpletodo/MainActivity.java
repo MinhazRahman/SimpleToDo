@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -90,6 +91,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(itemsAdapter);
         // Set the LayoutManager for the RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Decorate the RecyclerView
+        // This decorator displays dividers between each item within the list
+        RecyclerView.ItemDecoration itemDecoration = new
+                DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(itemDecoration);
 
         // Add logic on button press
         // Add item to the RecyclerView when Add button is clicked
