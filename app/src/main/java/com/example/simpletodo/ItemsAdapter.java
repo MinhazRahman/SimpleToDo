@@ -1,12 +1,19 @@
 package com.example.simpletodo;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -28,6 +35,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     List<String> items;
     OnItemLongClickListener itemLongClickListener;
     OnItemClickListener itemClickListener;
+    String firstLetter;
+    Context context;
+    ColorGenerator generator = ColorGenerator.MATERIAL;
 
     /**
      * Initialize the dataset of the Adapter.
@@ -49,7 +59,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
          * Create a new view, which defines the UI of the list item
          * Use layout inflater to inflate a view
          */
-        View todoView = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+        View todoView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_menu, parent, false);
 
         // Wrap it inside a ViewHolder and return it
         return new ViewHolder(todoView);
@@ -60,41 +70,48 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Get the item from your dataset at this position
         String item = items.get(position);
+        // Get the first letter from the list item
+        firstLetter = String.valueOf(items.get(position).charAt(0));
+
+        //  Create a new TextDrawable for our image's background
+        TextDrawable textDrawable = TextDrawable.builder().buildRound(firstLetter, generator.getRandomColor());
 
         // Bind the item into the specified ViewHolder
-        holder.bind(item);
+        holder.bind(item, textDrawable);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return items.size();
+        return items == null? 0: items.size();
     }
 
     // The ViewHolder is a wrapper around a View that contains the layout for an individual item in the list.
     class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView textView;
+        TextView title;
+        ImageView letter;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(android.R.id.text1);
+            title = itemView.findViewById(R.id.item_title);
+            letter = itemView.findViewById(R.id.item_letter);
         }
 
         // Update the contents of the ViewHolder(textView) with the data item
-        public void bind(String item) {
+        public void bind(String item, TextDrawable drawable) {
 
-            textView.setText(item);
-            // Add icon to each item
-            textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.abc_vector_test, 0, 0, 0);
-            textView.setOnClickListener(new View.OnClickListener() {
+            title.setText(item);
+            letter.setImageDrawable(drawable);
+            title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     // Notify the listener at which position was clicked
                     itemClickListener.onItemClicked(getAdapterPosition());
                 }
             });
-            textView.setOnLongClickListener(new View.OnLongClickListener() {
+            title.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
                     // Notify the listener at which position was long pressed

@@ -89,8 +89,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Construct the adapter for the items
         itemsAdapter = new ItemsAdapter(items, onLongClickListener, onItemClickListener);
+
         // Set the Adapter for the RecyclerView
         recyclerView.setAdapter(itemsAdapter);
+
         // Set the LayoutManager for the RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -162,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
     private void loadItems(){
         try {
             items = new ArrayList<>(readLines(getDataFile(), Charset.defaultCharset()));
+
         }catch (IOException exception){
             Log.e("MainActivity", "Error while reading items", exception);
             items = new ArrayList<>();
