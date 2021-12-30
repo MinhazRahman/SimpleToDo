@@ -14,12 +14,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amulyakhare.textdrawable.TextDrawable;
+import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
@@ -37,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     List<String> items;
     FloatingActionButton btnAdd;
     EditText editText;
+    TextView emptyView;
+    ImageView emptyViewIcon;
     RecyclerView recyclerView;
     ItemsAdapter itemsAdapter;
 
@@ -48,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         btnAdd = findViewById(R.id.btnAdd);
         editText = findViewById(R.id.editItem);
         recyclerView = findViewById(R.id.rvItems);
+        emptyView = findViewById(R.id.emptyViewText);
+        emptyViewIcon = findViewById(R.id.emptyViewIcon);
 
 
         loadItems();
@@ -164,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
     private void loadItems(){
         try {
             items = new ArrayList<>(readLines(getDataFile(), Charset.defaultCharset()));
+           showMessageOnEmptyRecyclerView();
 
         }catch (IOException exception){
             Log.e("MainActivity", "Error while reading items", exception);
@@ -175,8 +184,24 @@ public class MainActivity extends AppCompatActivity {
     private void saveItems(){
         try {
             writeLines(getDataFile(), items);
+            showMessageOnEmptyRecyclerView();
         } catch (IOException exception) {
             Log.e("MainActivity", "Error while writing items", exception);
+        }
+    }
+
+    // Show a message to the user if the RecyclerView is empty
+    private void showMessageOnEmptyRecyclerView(){
+        if (items.isEmpty()){
+            recyclerView.setVisibility(View.GONE);
+            emptyViewIcon.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.VISIBLE);
+
+            emptyView.setText(String.valueOf("No todo items!!"));
+        }else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyViewIcon.setVisibility(View.GONE);
+            emptyView.setVisibility(View.GONE);
         }
     }
 }
