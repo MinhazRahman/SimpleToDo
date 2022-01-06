@@ -37,9 +37,11 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_ITEM_POSITION = "item_position";
     public static final String KEY_ITEM_TEXT = "item_text";
     public static final int EDIT_TEXT_CODE = 25;
+    public static final int ADD_TEXT_CODE = 20;
 
     List<String> items;
     FloatingActionButton btnAdd;
+    FloatingActionButton btnAddItem;
     EditText editText;
     TextView emptyView;
     ImageView emptyViewIcon;
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btnAdd = findViewById(R.id.btnAdd);
+        btnAddItem = findViewById(R.id.btnAddItem);
         editText = findViewById(R.id.editItem);
         recyclerView = findViewById(R.id.rvItems);
         emptyView = findViewById(R.id.emptyViewText);
@@ -136,21 +139,33 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // Clicking on the btnAddItem button launches AddItemActivity
+        // Add item to the RecyclerView when Done button is clicked
+        btnAddItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Construct the Intent
+                // first parameter is the context, second is the class of the activity to launch
+                Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
+
+                // Brings up the second activity
+                startActivityForResult(intent, ADD_TEXT_CODE);
+
+            }
+        });
     }
 
     // Once the sub-activity finishes, the onActivityResult() method in the calling activity is invoked
     // Handle the result of the sub-activity
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == EDIT_TEXT_CODE) {
+        if (resultCode == EditActivity.RESULT_OK && requestCode == EDIT_TEXT_CODE) {
             // Extract the updated data
+            assert data != null;
             int itemPosition = data.getExtras().getInt(KEY_ITEM_POSITION);
             String editedItemText = data.getStringExtra(KEY_ITEM_TEXT);
-
-            // Log.d("MainActivity:", "Updated items: " + itemPosition + " " + editedItemText);
 
             // Update the model with the edited item
             items.set(itemPosition, editedItemText);
@@ -158,7 +173,21 @@ public class MainActivity extends AppCompatActivity {
             itemsAdapter.notifyItemChanged(itemPosition);
             saveItems();
             Toast.makeText(getApplicationContext(), "Item updated successfully", Toast.LENGTH_SHORT).show();
-        }else {
+        }
+        else if (resultCode == AddItemActivity.RESULT_OK && requestCode == ADD_TEXT_CODE){
+            // Extract the data
+            assert data != null;
+            String newItem = data.getStringExtra(KEY_ITEM_TEXT);
+            // Add item to the data model
+            items.add(newItem);
+            // Notify adapter that an item is inserted
+            itemsAdapter.notifyItemInserted(items.size()-1); // item is inserted at the last position
+            saveItems();
+            // Notify user that an item was added
+            Toast.makeText(getApplicationContext(), "Item was added",
+                    Toast.LENGTH_SHORT).show();
+        }
+        else {
             Log.w("MainActivity", "Unknown call to onActivityResult");
         }
     }

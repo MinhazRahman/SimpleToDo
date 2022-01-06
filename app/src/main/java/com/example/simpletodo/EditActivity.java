@@ -45,7 +45,7 @@ public class EditActivity extends AppCompatActivity {
                 // Get the text from the field after clicking on the button
                 String updatedItem = editText.getText().toString().trim();
 
-                // Check if editText field if empty
+                // Check if editText field is empty
                 if (TextUtils.isEmpty(updatedItem)){
                     Toast.makeText(getApplicationContext(), "Empty field not allowed!",
                             Toast.LENGTH_SHORT).show();

@@ -5,4 +5,5 @@
     <string name="update_the_item">Update the item</string>
     <string name="save">Save</string>
     <string name="todo">TODO</string>
+    <string name="add_item_here">Add item here!</string>
 </resources>
