@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
 
     List<String> items;
     FloatingActionButton btnAdd;
-    FloatingActionButton btnAddItem;
-    EditText editText;
     TextView emptyView;
     ImageView emptyViewIcon;
     RecyclerView recyclerView;
@@ -54,8 +52,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btnAdd = findViewById(R.id.btnAdd);
-        btnAddItem = findViewById(R.id.btnAddItem);
-        editText = findViewById(R.id.editItem);
         recyclerView = findViewById(R.id.rvItems);
         emptyView = findViewById(R.id.emptyViewText);
         emptyViewIcon = findViewById(R.id.emptyViewIcon);
@@ -113,36 +109,8 @@ public class MainActivity extends AppCompatActivity {
                 DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(itemDecoration);
 
-        // Add logic on button press
-        // Add item to the RecyclerView when Add button is clicked
+        // Clicking on the Add button launches AddItemActivity
         btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Get item from the text field
-                String newItem = editText.getText().toString().trim();
-
-                // Check if editText field is empty
-                if (TextUtils.isEmpty(newItem)){
-                    Toast.makeText(getApplicationContext(), "Empty field not allowed!",
-                            Toast.LENGTH_SHORT).show();
-                }else {
-                    // Add item to the data model
-                    items.add(newItem);
-                    // Notify adapter that an item is inserted
-                    itemsAdapter.notifyItemInserted(items.size()-1); // item is inserted at the last position
-                    // Clear the edit text
-                    editText.setText("");
-                    // Notify user that an item was added
-                    Toast.makeText(getApplicationContext(), "Item was added",
-                            Toast.LENGTH_SHORT).show();
-                    saveItems();
-                }
-            }
-        });
-
-        // Clicking on the btnAddItem button launches AddItemActivity
-        // Add item to the RecyclerView when Done button is clicked
-        btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Construct the Intent
@@ -161,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == EditActivity.RESULT_OK && requestCode == EDIT_TEXT_CODE) {
             // Extract the updated data
             assert data != null;
