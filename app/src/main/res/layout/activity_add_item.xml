@@ -11,6 +11,8 @@
         android:id="@+id/txtAddItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="0dp"
         android:ems="10"

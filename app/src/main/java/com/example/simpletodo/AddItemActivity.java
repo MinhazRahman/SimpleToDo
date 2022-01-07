@@ -42,7 +42,6 @@ public class AddItemActivity extends AppCompatActivity {
         editTextDate = findViewById(R.id.editTxtDate);
         chooseTime = findViewById(R.id.editTxtChooseTime);
 
-
         Objects.requireNonNull(getSupportActionBar()).setTitle("Add Item");
 
         // Pop up date picker dialog when clicked on editTxtDate text field
@@ -136,6 +135,10 @@ public class AddItemActivity extends AppCompatActivity {
                 finish(); // closes the activity
             }
         });
+
+        // Focus on Add Item EditText field
+        editTextAddItem.setFocusableInTouchMode(true);
+        editTextAddItem.requestFocus();
 
     }
 }
