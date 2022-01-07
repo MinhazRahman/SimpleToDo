@@ -6,4 +6,8 @@
     <string name="save">Save</string>
     <string name="todo">TODO</string>
     <string name="add_item_here">Add item here!</string>
+    <string name="enter_date">Enter Date</string>
+    <string name="enter_time">Enter Time</string>
+    <string name="choose_time">Choose time</string>
+    <string name="choose_date">Choose date</string>
 </resources>

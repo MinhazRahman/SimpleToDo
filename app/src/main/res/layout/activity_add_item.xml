@@ -16,6 +16,42 @@
         android:ems="10"
         android:hint="@string/add_item_here" />
 
+    <EditText
+        android:id="@+id/editTxtDate"
+        android:layout_width="167dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtAddItem"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:focusable="false"
+        android:hint="@string/choose_date" />
+
+    <ImageView
+        android:id="@+id/imageViewAtIcon"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="50dp"
+        android:layout_below="@id/txtAddItem"
+        android:layout_toEndOf="@+id/editTxtDate"
+        android:src="@drawable/ic_baseline_access_time_24" />
+
+    <EditText
+        android:id="@+id/editTxtChooseTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtAddItem"
+        android:layout_toEndOf="@+id/imageViewAtIcon"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginStart="10dp"
+        android:ems="10"
+        android:focusable="false"
+        android:hint="@string/choose_time" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnAddItemDone"
         android:layout_width="wrap_content"
