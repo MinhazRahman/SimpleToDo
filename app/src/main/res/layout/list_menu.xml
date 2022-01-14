@@ -41,7 +41,7 @@
         android:fadingEdge="horizontal"
         android:gravity="end|center_vertical"
         android:textSize="15sp"
-        android:layout_weight="0.87"/>
+        android:layout_weight="0.25"/>
 
     <!-- Checkbox, and/or radio button, arrow icon will be inserted here. -->
     <ImageView

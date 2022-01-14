@@ -17,7 +17,7 @@ public class Utility {
         SimpleDateFormat simpleDateFormat;
 
         calendar = Calendar.getInstance();
-        simpleDateFormat = new SimpleDateFormat("MM/dd/yyy", Locale.getDefault());
+        simpleDateFormat = new SimpleDateFormat("MM/dd/yy", Locale.getDefault());
         currentDate = simpleDateFormat.format(calendar.getTime());
 
         return currentDate;
