@@ -89,21 +89,28 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     // The ViewHolder is a wrapper around a View that contains the layout for an individual item in the list.
     class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView textView;
-        TextView title;
         ImageView letter;
+        TextView title;
+        TextView reminder;
+        TextView dateOfCreation;
+        ImageView rightIcon;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.item_title);
             letter = itemView.findViewById(R.id.item_letter);
+            //reminder = itemView.findViewById(R.id.item_reminder);
+            //dateOfCreation = itemView.findViewById(R.id.item_date);
+            rightIcon = itemView.findViewById(R.id.right_icon);
         }
 
         // Update the contents of the ViewHolder(textView) with the data item
         public void bind(String item, TextDrawable drawable) {
 
-            title.setText(item);
             letter.setImageDrawable(drawable);
+            title.setText(item);
+            rightIcon.setVisibility(View.VISIBLE);
             title.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
