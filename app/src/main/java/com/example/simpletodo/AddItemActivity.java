@@ -59,7 +59,7 @@ public class AddItemActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
                         StringBuilder stringBuilder = new StringBuilder();
-                        stringBuilder.append(dayOfMonth).append("/").append((monthOfYear + 1)).append("/").append(year);
+                        stringBuilder.append((monthOfYear + 1)).append("/").append(dayOfMonth).append("/").append(year);
                         editTextDate.setText(stringBuilder);
                     }
                 };
