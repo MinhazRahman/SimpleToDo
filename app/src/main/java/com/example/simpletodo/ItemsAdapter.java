@@ -1,6 +1,5 @@
 package com.example.simpletodo;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
-
-import org.w3c.dom.Text;
-
 import java.util.List;
+
+import utility.Utility;
 
 /** Define the Adapter that associates your data with the ViewHolder views.
 * The Adapter creates ViewHolder objects as needed, and also sets the data for those views
@@ -35,9 +31,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     List<String> items;
     OnItemLongClickListener itemLongClickListener;
     OnItemClickListener itemClickListener;
-    String firstLetter;
-    Context context;
-    ColorGenerator generator = ColorGenerator.MATERIAL;
 
     /**
      * Initialize the dataset of the Adapter.
@@ -70,14 +63,9 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Get the item from your dataset at this position
         String item = items.get(position);
-        // Get the first letter from the list item
-        firstLetter = String.valueOf(items.get(position).charAt(0));
-
-        //  Create a new TextDrawable for our image's background
-        TextDrawable textDrawable = TextDrawable.builder().buildRound(firstLetter, generator.getRandomColor());
 
         // Bind the item into the specified ViewHolder
-        holder.bind(item, textDrawable);
+        holder.bind(item);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -101,15 +89,16 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             title = itemView.findViewById(R.id.item_title);
             letter = itemView.findViewById(R.id.item_letter);
             //reminder = itemView.findViewById(R.id.item_reminder);
-            //dateOfCreation = itemView.findViewById(R.id.item_date);
+            dateOfCreation = itemView.findViewById(R.id.item_date);
             rightIcon = itemView.findViewById(R.id.right_icon);
         }
 
         // Update the contents of the ViewHolder(textView) with the data item
-        public void bind(String item, TextDrawable drawable) {
+        public void bind(String item) {
 
-            letter.setImageDrawable(drawable);
+            letter.setImageDrawable(Utility.getDrawableLetter(item));
             title.setText(item);
+            dateOfCreation.setText(Utility.getCurrentDate());
             rightIcon.setVisibility(View.VISIBLE);
             title.setOnClickListener(new View.OnClickListener() {
                 @Override
