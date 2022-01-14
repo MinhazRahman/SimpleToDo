@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String KEY_ITEM_POSITION = "item_position";
     public static final String KEY_ITEM_TEXT = "item_text";
+    public static final String KEY_REMINDER_DATE = "reminder_date";
+    public static final String KEY_REMINDER_TIME = "reminder_time";
     public static final int EDIT_TEXT_CODE = 25;
     public static final int ADD_TEXT_CODE = 20;
 
@@ -147,6 +149,9 @@ public class MainActivity extends AppCompatActivity {
             // Extract the data
             assert data != null;
             String newItem = data.getStringExtra(KEY_ITEM_TEXT);
+            String dateString = data.getStringExtra(KEY_REMINDER_DATE);
+            String timeString = data.getStringExtra(KEY_REMINDER_TIME);
+
             // Add item to the data model
             items.add(newItem);
             // Notify adapter that an item is inserted

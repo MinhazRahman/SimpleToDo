@@ -16,13 +16,15 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Objects;
 
 public class AddItemActivity extends AppCompatActivity {
 
     EditText editTextAddItem;
-    EditText editTextDate;
+    EditText chooseDate;
     EditText chooseTime;
     FloatingActionButton btnDone;
     FloatingActionButton btnCancel;
@@ -39,15 +41,15 @@ public class AddItemActivity extends AppCompatActivity {
         editTextAddItem = findViewById(R.id.txtAddItem);
         btnDone = findViewById(R.id.btnAddItemDone);
         btnCancel = findViewById(R.id.btnAddItemCancel);
-        editTextDate = findViewById(R.id.editTxtDate);
+        chooseDate = findViewById(R.id.editTxtDate);
         chooseTime = findViewById(R.id.editTxtChooseTime);
 
         Objects.requireNonNull(getSupportActionBar()).setTitle("Add Item");
 
         // Pop up date picker dialog when clicked on editTxtDate text field
         // Enter the selected date to the text field
-        editTextDate.setInputType(InputType.TYPE_NULL);
-        editTextDate.setOnClickListener(new View.OnClickListener() {
+        chooseDate.setInputType(InputType.TYPE_NULL);
+        chooseDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final Calendar calendar = Calendar.getInstance();
@@ -58,9 +60,13 @@ public class AddItemActivity extends AppCompatActivity {
                 DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                        StringBuilder stringBuilder = new StringBuilder();
-                        stringBuilder.append((monthOfYear + 1)).append("/").append(dayOfMonth).append("/").append(year);
-                        editTextDate.setText(stringBuilder);
+                        Calendar myCalender = Calendar.getInstance();
+                        myCalender.set(year, monthOfYear, dayOfMonth);
+
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, ''yy", Locale.getDefault());
+                        String dateString = dateFormat.format(myCalender.getTime());
+
+                        chooseDate.setText(dateString);
                     }
                 };
 
@@ -83,9 +89,9 @@ public class AddItemActivity extends AppCompatActivity {
                         // Show selected time as am-pm inside EditText field
                         String amPm;
                         if (hourOfDay >= 12) {
-                            amPm = "PM";
+                            amPm = " PM";
                         } else {
-                            amPm = "AM";
+                            amPm = " AM";
                         }
                         StringBuilder selectedTime = new StringBuilder();
                         selectedTime.append(hourOfDay).append(":").append(minutes).append(amPm);
@@ -104,8 +110,10 @@ public class AddItemActivity extends AppCompatActivity {
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Get the text from the text field
+                // Get the texts from the text fields
                 String item = editTextAddItem.getText().toString().trim();
+                String dateString = chooseDate.getText().toString().trim();
+                String timeString = chooseTime.getText().toString().trim();
 
                 // Create an Intent
                 Intent intent = new Intent();
@@ -118,6 +126,8 @@ public class AddItemActivity extends AppCompatActivity {
 
                     // Pass relevant data back as a result
                     intent.putExtra(MainActivity.KEY_ITEM_TEXT, item);
+                    intent.putExtra(MainActivity.KEY_REMINDER_DATE, dateString);
+                    intent.putExtra(MainActivity.KEY_REMINDER_TIME, timeString);
 
                     // Activity finished ok, return the data
                     setResult(RESULT_OK, intent); // set result code and bundle data for response
