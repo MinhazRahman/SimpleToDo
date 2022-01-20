@@ -155,15 +155,14 @@ public class MainActivity extends AppCompatActivity {
             String dateString = data.getStringExtra(KEY_REMINDER_DATE);
             String timeString = data.getStringExtra(KEY_REMINDER_TIME);
 
-            ToDoItem toDoItem = new ToDoItem(itemDescription, Utility.getCurrentDate());
             // create the new ToDoItem
-            toDoItem.setItemDescription(itemDescription);
-            toDoItem.setDateOfCreation(Utility.getCurrentDate());
-            toDoItem.setReminderDate(dateString);
-            toDoItem.setReminderTime(timeString);
+            ToDoItem newToDoItem = new ToDoItem(itemDescription, Utility.getCurrentDate());
+            // set property values for the new item
+            newToDoItem.setReminderDate(dateString);
+            newToDoItem.setReminderTime(timeString);
 
             // Add item to the data model
-            toDoItemList.add(toDoItem);
+            toDoItemList.add(newToDoItem);
             // Notify adapter that an item is inserted
             itemsAdapter.notifyItemInserted(toDoItemList.size()-1); // item is inserted at the last position
             saveItemList();
