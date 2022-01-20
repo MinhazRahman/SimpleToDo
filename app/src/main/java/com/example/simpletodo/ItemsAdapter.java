@@ -66,7 +66,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         // Get the item from your dataset at this position
         toDoItem = toDoItemList.get(position);
         String itemDescription = toDoItem.getItemDescription();
-        String reminder = toDoItem.getReminderDate() + ", "+ toDoItem.getReminderTime();
+        String reminder = toDoItem.getReminderDate() + " "+ toDoItem.getReminderTime();
 
         // Bind the item into the specified ViewHolder
         holder.bind(itemDescription, reminder);

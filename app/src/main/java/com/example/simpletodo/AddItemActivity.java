@@ -66,7 +66,7 @@ public class AddItemActivity extends AppCompatActivity {
                         Calendar myCalender = Calendar.getInstance();
                         myCalender.set(year, monthOfYear, dayOfMonth);
 
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, ''yy", Locale.getDefault());
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d, yyyy", Locale.getDefault());
                         String dateString = dateFormat.format(myCalender.getTime());
 
                         chooseDate.setText(dateString);
