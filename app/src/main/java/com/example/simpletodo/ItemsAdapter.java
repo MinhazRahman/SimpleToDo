@@ -98,12 +98,12 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         }
 
         // Update the contents of the ViewHolder(textView) with the data item
-        public void bind(String item, String reminder) {
+        public void bind(String itemDescription, String reminder) {
 
-            letter.setImageDrawable(Utility.getDrawableLetter(item));
-            title.setText(item);
+            letter.setImageDrawable(Utility.getDrawableLetter(itemDescription));
+            title.setText(itemDescription);
             reminderDateTime.setText(reminder);
-            dateOfCreation.setText(Utility.getCurrentDate());
+            dateOfCreation.setText(toDoItem.getDateOfCreation());
             rightIcon.setVisibility(View.VISIBLE);
             title.setOnClickListener(new View.OnClickListener() {
                 @Override
