@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import utility.ToDoItem;
 import utility.Utility;
 
 /** Define the Adapter that associates your data with the ViewHolder views.
@@ -28,18 +29,18 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         void onItemClicked(int position);
     }
 
-    List<String> items;
+    List<ToDoItem> toDoItemList;
     OnItemLongClickListener itemLongClickListener;
     OnItemClickListener itemClickListener;
 
     /**
      * Initialize the dataset of the Adapter.
-     * @param items List<String> containing the data to populate views to be used
+     * @param toDoItemList List<String> containing the data to populate views to be used
      * by RecyclerView.
      */
-    public ItemsAdapter(List<String> items, OnItemLongClickListener itemLongClickListener,
+    public ItemsAdapter(List<ToDoItem> toDoItemList, OnItemLongClickListener itemLongClickListener,
                         OnItemClickListener itemClickListener){
-        this.items = items;
+        this.toDoItemList = toDoItemList;
         this.itemLongClickListener = itemLongClickListener;
         this.itemClickListener = itemClickListener;
     }
@@ -62,16 +63,16 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Get the item from your dataset at this position
-        String item = items.get(position);
+        String itemDescription = toDoItemList.get(position).getItemDescription();
 
         // Bind the item into the specified ViewHolder
-        holder.bind(item);
+        holder.bind(itemDescription);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return items == null? 0: items.size();
+        return toDoItemList == null? 0: toDoItemList.size();
     }
 
     // The ViewHolder is a wrapper around a View that contains the layout for an individual item in the list.

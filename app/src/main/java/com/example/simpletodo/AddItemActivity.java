@@ -21,6 +21,9 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
 
+import utility.ToDoItem;
+import utility.Utility;
+
 public class AddItemActivity extends AppCompatActivity {
 
     EditText editTextAddItem;
@@ -111,7 +114,7 @@ public class AddItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Get the texts from the text fields
-                String item = editTextAddItem.getText().toString().trim();
+                String itemDescription = editTextAddItem.getText().toString().trim();
                 String dateString = chooseDate.getText().toString().trim();
                 String timeString = chooseTime.getText().toString().trim();
 
@@ -119,13 +122,13 @@ public class AddItemActivity extends AppCompatActivity {
                 Intent intent = new Intent();
 
                 // Check if txtAddItem field is empty
-                if (TextUtils.isEmpty(item)){
+                if (TextUtils.isEmpty(itemDescription)){
                     Toast.makeText(getApplicationContext(), "Empty field not allowed!",
                             Toast.LENGTH_SHORT).show();
                 }else {
 
                     // Pass relevant data back as a result
-                    intent.putExtra(MainActivity.KEY_ITEM_TEXT, item);
+                    intent.putExtra(MainActivity.KEY_ITEM_TEXT, itemDescription);
                     intent.putExtra(MainActivity.KEY_REMINDER_DATE, dateString);
                     intent.putExtra(MainActivity.KEY_REMINDER_TIME, timeString);
 

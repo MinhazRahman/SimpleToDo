@@ -1,7 +1,6 @@
 package com.example.simpletodo;
 
 
-import static org.apache.commons.io.FileUtils.readLines;
 import static org.apache.commons.io.FileUtils.writeLines;
 
 import androidx.annotation.Nullable;
@@ -9,11 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,26 +18,31 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import utility.ToDoItem;
+import utility.Utility;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String KEY_ITEM_POSITION = "item_position";
+    public static final String KEY_TODO_ITEM = "todo_item";
     public static final String KEY_ITEM_TEXT = "item_text";
     public static final String KEY_REMINDER_DATE = "reminder_date";
     public static final String KEY_REMINDER_TIME = "reminder_time";
     public static final int EDIT_TEXT_CODE = 25;
     public static final int ADD_TEXT_CODE = 20;
 
-    List<String> items;
+    List<ToDoItem> toDoItemList;
     FloatingActionButton btnAdd;
     TextView emptyView;
     ImageView emptyViewIcon;
@@ -59,19 +60,19 @@ public class MainActivity extends AppCompatActivity {
         emptyViewIcon = findViewById(R.id.emptyViewIcon);
 
 
-        loadItems();
+        loadItemList();
 
         // Implement ItemsAdapter.OnItemLongClickListener interface
         ItemsAdapter.OnItemLongClickListener onLongClickListener = new ItemsAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClicked(int position) {
                 // Remove the item from the data model
-                items.remove(position);
+                toDoItemList.remove(position);
                 // Notify the adapter at which position the item was deleted
                 itemsAdapter.notifyItemRemoved(position);
                 // Notify the user
                 Toast.makeText(getApplicationContext(), "Item was removed", Toast.LENGTH_SHORT).show();
-                saveItems();
+                saveItemList();
             }
         };
 
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClicked(int position) {
                 // Get the text of the item at the given position
-                String itemText = items.get(position);
+                String itemText = toDoItemList.get(position).getItemDescription();
 
                // Log.d("MainActivity", "Single click at position: " + position + " " + itemText);
 
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         // Construct the adapter for the items
-        itemsAdapter = new ItemsAdapter(items, onLongClickListener, onItemClickListener);
+        itemsAdapter = new ItemsAdapter(toDoItemList, onLongClickListener, onItemClickListener);
 
         // Set the Adapter for the RecyclerView
         recyclerView.setAdapter(itemsAdapter);
@@ -136,27 +137,36 @@ public class MainActivity extends AppCompatActivity {
             // Extract the updated data
             assert data != null;
             int itemPosition = data.getExtras().getInt(KEY_ITEM_POSITION);
-            String editedItemText = data.getStringExtra(KEY_ITEM_TEXT);
+            String editedItemDescription = data.getStringExtra(KEY_ITEM_TEXT);
+            ToDoItem updatedItem = toDoItemList.get(itemPosition);
+            updatedItem.setItemDescription(editedItemDescription);
 
             // Update the model with the edited item
-            items.set(itemPosition, editedItemText);
+            toDoItemList.set(itemPosition, updatedItem);
             // Notify the adapter
             itemsAdapter.notifyItemChanged(itemPosition);
-            saveItems();
+            saveItemList();
             Toast.makeText(getApplicationContext(), "Item updated successfully", Toast.LENGTH_SHORT).show();
         }
         else if (resultCode == AddItemActivity.RESULT_OK && requestCode == ADD_TEXT_CODE){
             // Extract the data
             assert data != null;
-            String newItem = data.getStringExtra(KEY_ITEM_TEXT);
+            String itemDescription = data.getStringExtra(KEY_ITEM_TEXT);
             String dateString = data.getStringExtra(KEY_REMINDER_DATE);
             String timeString = data.getStringExtra(KEY_REMINDER_TIME);
 
+            ToDoItem toDoItem = new ToDoItem(itemDescription, Utility.getCurrentDate());
+            // create the new ToDoItem
+            toDoItem.setItemDescription(itemDescription);
+            toDoItem.setDateOfCreation(Utility.getCurrentDate());
+            toDoItem.setReminderDate(dateString);
+            toDoItem.setReminderTime(timeString);
+
             // Add item to the data model
-            items.add(newItem);
+            toDoItemList.add(toDoItem);
             // Notify adapter that an item is inserted
-            itemsAdapter.notifyItemInserted(items.size()-1); // item is inserted at the last position
-            saveItems();
+            itemsAdapter.notifyItemInserted(toDoItemList.size()-1); // item is inserted at the last position
+            saveItemList();
             // Notify user that an item was added
             Toast.makeText(getApplicationContext(), "Item was added",
                     Toast.LENGTH_SHORT).show();
@@ -172,21 +182,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Load data from the data file
-    private void loadItems(){
+    private void loadItemList(){
         try {
-            items = new ArrayList<>(readLines(getDataFile(), Charset.defaultCharset()));
-           showMessageOnEmptyRecyclerView();
+            // toDoItemList = new ArrayList<>(readLines(getDataFile(), Charset.defaultCharset()));
 
-        }catch (IOException exception){
+            FileInputStream fileInputStream = new FileInputStream(getDataFile());
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            Object obj = objectInputStream.readObject();
+            toDoItemList = (ArrayList<ToDoItem>) obj;
+            objectInputStream.close();
+
+            showMessageOnEmptyRecyclerView();
+
+        }catch (IOException | ClassNotFoundException exception){
             Log.e("MainActivity", "Error while reading items", exception);
-            items = new ArrayList<>();
+            toDoItemList = new ArrayList<>();
         }
     }
 
     // Save data into the data file
-    private void saveItems(){
+    private void saveItemList(){
         try {
-            writeLines(getDataFile(), items);
+            // writeLines(getDataFile(), toDoItemList);
+            FileOutputStream fileOutputStream = new FileOutputStream(getDataFile());
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(toDoItemList);
+            objectOutputStream.close();
+
             showMessageOnEmptyRecyclerView();
         } catch (IOException exception) {
             Log.e("MainActivity", "Error while writing items", exception);
@@ -195,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Show a message to the user if the RecyclerView is empty
     private void showMessageOnEmptyRecyclerView(){
-        if (items.isEmpty()){
+        if (toDoItemList.isEmpty()){
             recyclerView.setVisibility(View.GONE);
             emptyViewIcon.setVisibility(View.VISIBLE);
             emptyView.setVisibility(View.VISIBLE);
