@@ -29,6 +29,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         void onItemClicked(int position);
     }
 
+    ToDoItem toDoItem;
     List<ToDoItem> toDoItemList;
     OnItemLongClickListener itemLongClickListener;
     OnItemClickListener itemClickListener;
@@ -63,10 +64,12 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Get the item from your dataset at this position
-        String itemDescription = toDoItemList.get(position).getItemDescription();
+        toDoItem = toDoItemList.get(position);
+        String itemDescription = toDoItem.getItemDescription();
+        String reminder = toDoItem.getReminderDate() + ", "+ toDoItem.getReminderTime();
 
         // Bind the item into the specified ViewHolder
-        holder.bind(itemDescription);
+        holder.bind(itemDescription, reminder);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -80,7 +83,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
 
         ImageView letter;
         TextView title;
-        TextView reminder;
+        TextView reminderDateTime;
         TextView dateOfCreation;
         ImageView rightIcon;
 
@@ -89,16 +92,17 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             super(itemView);
             title = itemView.findViewById(R.id.item_title);
             letter = itemView.findViewById(R.id.item_letter);
-            //reminder = itemView.findViewById(R.id.item_reminder);
+            reminderDateTime = itemView.findViewById(R.id.item_reminder_date_time);
             dateOfCreation = itemView.findViewById(R.id.item_date);
             rightIcon = itemView.findViewById(R.id.right_icon);
         }
 
         // Update the contents of the ViewHolder(textView) with the data item
-        public void bind(String item) {
+        public void bind(String item, String reminder) {
 
             letter.setImageDrawable(Utility.getDrawableLetter(item));
             title.setText(item);
+            reminderDateTime.setText(reminder);
             dateOfCreation.setText(Utility.getCurrentDate());
             rightIcon.setVisibility(View.VISIBLE);
             title.setOnClickListener(new View.OnClickListener() {
