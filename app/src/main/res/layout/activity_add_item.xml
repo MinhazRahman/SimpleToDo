@@ -19,18 +19,27 @@
         android:ems="10"
         android:hint="@string/add_item_here" />
 
+    <ImageView
+        android:id="@+id/calender_icon"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="50dp"
+        android:layout_below="@id/txtAddItem"
+        android:src="@drawable/ic_baseline_calendar_month_24" />
+
     <EditText
         android:id="@+id/editTxtDate"
-        android:layout_width="167dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtAddItem"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="25dp"
+        android:layout_toEndOf="@id/calender_icon"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="50dp"
         android:ems="10"
         android:focusable="false"
         android:gravity="center"
-        android:hint="@string/choose_date" />
+        android:hint="@string/date" />
 
     <ImageView
         android:id="@+id/imageViewAtIcon"
@@ -50,12 +59,12 @@
         android:layout_toEndOf="@+id/imageViewAtIcon"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="5dp"
         android:ems="10"
         android:focusable="false"
         android:gravity="center"
-        android:hint="@string/choose_time" />
+        android:hint="@string/time" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnAddItemDone"
