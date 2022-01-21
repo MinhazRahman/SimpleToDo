@@ -90,14 +90,23 @@ public class AddItemActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
                         // Show selected time as am-pm inside EditText field
-                        String amPm;
-                        if (hourOfDay >= 12) {
-                            amPm = " PM";
+                        int hour = hourOfDay;
+                        String format = "";
+
+                        if (hour == 0) {
+                            hour += 12;
+                            format = " AM";
+                        } else if (hour == 12) {
+                            format = " PM";
+                        } else if (hour > 12) {
+                            hour -= 12;
+                            format = " PM";
                         } else {
-                            amPm = " AM";
+                            format = " AM";
                         }
+
                         StringBuilder selectedTime = new StringBuilder();
-                        selectedTime.append(hourOfDay).append(":").append(minutes).append(amPm);
+                        selectedTime.append(hour).append(":").append(minutes).append(format);
                         chooseTime.setText(selectedTime);
                     }
                 };
